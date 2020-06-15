@@ -25,7 +25,7 @@ class requestHandler(httpsrv.BaseHTTPRequestHandler):
     
     def do_POST(self):
         contentLen = int(self.headers.get('content-length'))
-        response = self.rfile.read(contentLen)
+        response = self.rfile.read(contentLen).decode('utf-8')
         self._set_response()
         data = json.loads(response)
         SAN_response(data).sendModifiedJson('192.168.0.112', 1026)
