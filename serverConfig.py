@@ -1,4 +1,5 @@
 import json
+import requests
 
 class serverConfig():
     def __init__(self):
@@ -19,7 +20,6 @@ class serverConfig():
         return self.dicts['proxy_port']
     def test(self):
         print(self.dicts)
-
 
 if __name__ == "__main__":
     serverConfig().test()

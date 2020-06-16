@@ -1,5 +1,6 @@
 import json
 import requests
+from cleanup import addEntity
 
 headers = {'Content-Type':'application/json'}
 
@@ -18,6 +19,7 @@ class SAN_response():
                         self.dictOfElements[elem][0][attr] = self.dictOfElements[elem][0][attr] + "_ql"
                         if(str(attr) == 'id'):
                             self.modEntityId = self.dictOfElements[elem][0][attr]
+                            addEntity(self.modEntityId)
                     else:
                         if self.dictOfElements[elem][0][attr]['type'] == 'string':
                             self.dictOfElements[elem][0][attr]['type'] = 'Text'
@@ -70,7 +72,8 @@ class SAN_response():
                 print('FAILED WITH ERROR '+e)
         else:
             print('Different response code {}'.format(r_get.status_code))
-    
+
+
     def test(self):
         print(self.entityModifier())
         print('--------------------------------------------------')

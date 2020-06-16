@@ -1,16 +1,19 @@
 
 #``````````````````````TO DO LIST````````````````````````````
 #------ADD LOGGING
-#------OUTPUT IF WAS ACCESSED/WAS SENT FROM
+#------EXCEPTIONS
 #------DOCKERIZE
-#------MAKE CODE LOGICAL AND MORE GENERIC
+#------MAKE CODE LOGICAL AND MORE GENERIC?
+#------GET LIST OF ENTITIES?
 #````````````````````````````````````````````````````````````
 
 import logging
+import sys
 import http.server as httpsrv
 import json
 from sanDecode import SAN_response
-from configParser import serverConfig as sc
+from serverConfig import serverConfig as sc
+from cleanup import cleanup
 
 #GLOBAL VARIABLES DELCARATION
 
@@ -44,4 +47,8 @@ def main():
     server.serve_forever()
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        cleanup(_OCB_IP_, _OCB_PORT_)
+        sys.exit(1)
