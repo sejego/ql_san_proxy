@@ -1,10 +1,13 @@
 import json
 import requests
+import os
 
 class serverConfig():
     def __init__(self):
         self.dicts = {}
-        with open("config.json") as file:
+        dirname = os.path.dirname(__file__)
+        filename = os.path.join(dirname, 'config.json')
+        with open(filename) as file:
             data = json.loads(file.read())
             for a in data:
                 for b in data[a]:
@@ -18,6 +21,7 @@ class serverConfig():
         return self.dicts['proxy_ip']
     def get_proxy_port(self):
         return self.dicts['proxy_port']
+    
     def test(self):
         print(self.dicts)
 
