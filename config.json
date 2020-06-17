@@ -1,13 +1,13 @@
 {
     "context-broker":
     {
-        "ocb_ip": "192.168.0.112",
+        "ocb_ip": "0.0.0.0",
         "ocb_port": 1026
     },
 
     "ql_proxy":
     {
-        "proxy_ip": "192.168.0.112",
+        "proxy_ip": "0.0.0.0",
         "proxy_port": 4440
     }
 }
