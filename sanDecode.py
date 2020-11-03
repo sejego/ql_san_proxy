@@ -1,3 +1,4 @@
+#TODO: COMMENT ME
 import json
 import requests
 from cleanup import addEntity
@@ -28,6 +29,8 @@ class SAN_response():
                                 self.dictOfElements[elem][0][attr]['value'] = 1
                             elif self.dictOfElements[elem][0][attr]['value'][0]['value']['reading']['value'] is False:
                                 self.dictOfElements[elem][0][attr]['value'] = 0
+                            else:
+                                self.dictOfElements[elem][0][attr]['value'] = float(self.dictOfElements[elem][0][attr]['value'][0]['value']['reading']['value'])
                             self.dictOfElements[elem][0][attr]['type'] = 'Number'
                         else:
                             self.dictOfElements[elem][0][attr]['type'] = 'Text'
