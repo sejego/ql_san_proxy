@@ -1,18 +1,27 @@
 
 #``````````````````````TO DO LIST````````````````````````````
-#------ADD IP CONFIG???
 #------ADD LOGGING
-#------OUTPUT IF WAS ACCESSED/WAS SENT FROM
-#------ARGS TO SET IP AND PORT/ELSE DEFAULT
+#------EXCEPTIONS
 #------DOCKERIZE
-#------MAKE CODE LOGICAL AND MORE GENERIC
+#------MAKE CODE LOGICAL AND MORE GENERIC?
+#------GET LIST OF ENTITIES?
 #````````````````````````````````````````````````````````````
 
 import logging
+import sys
 import http.server as httpsrv
 import json
 from sanDecode import SAN_response
-_PORT_ = 4440
+from serverConfig import serverConfig as sc
+from cleanup import cleanup
+
+#GLOBAL VARIABLES DELCARATION
+
+_OCB_IP_ = sc().get_ocb_ip()
+_OCB_PORT_ = sc().get_ocb_port()
+_PROXY_IP_ = sc().get_proxy_ip()
+_PROXY_PORT_ = sc().get_proxy_port()
+
 
 class requestHandler(httpsrv.BaseHTTPRequestHandler):
     def _set_response(self):
@@ -25,18 +34,21 @@ class requestHandler(httpsrv.BaseHTTPRequestHandler):
     
     def do_POST(self):
         contentLen = int(self.headers.get('content-length'))
-        response = self.rfile.read(contentLen)
+        response = self.rfile.read(contentLen).decode('utf-8')
         self._set_response()
         data = json.loads(response)
-        SAN_response(data).sendModifiedJson('192.168.0.112', 1026)
+        SAN_response(data).sendModifiedJson(_OCB_IP_, _OCB_PORT_)
         #SAN_response(data).test()
 
 def main():
-
-    server_address = ('192.168.0.112',_PORT_)     # MAKE SURE IT IS NOT LOCALHOST
+    server_address = (_PROXY_IP_, _PROXY_PORT_)     # MAKE SURE IT IS NOT LOCALHOST
     server = httpsrv.HTTPServer(server_address,requestHandler)
-    print("Serving on port ", _PORT_)
+    print("Serving on %s:%d" %(_PROXY_IP_,_PROXY_PORT_))
     server.serve_forever()
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        cleanup(_OCB_IP_, _OCB_PORT_)
+        sys.exit(1)
