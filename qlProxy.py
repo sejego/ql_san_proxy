@@ -1,13 +1,9 @@
+# ql_san_proxy server is a simple proxy server used to translate OPIL SAN entities 
+# that are present in Orion Context Broker to NGSI entities readable by FIWARE QuantumLeap. 
+# FIWARE QuantumLeap has a specific format that it "understands". 
+# To make use of QuantumLeap and software like Grafana, a translator is needed to convert these entities.
+# The created entities will have a _ql postfix in entity id and entity type.
 
-#``````````````````````TO DO LIST````````````````````````````
-#------ADD LOGGING
-#------EXCEPTIONS
-#------DOCKERIZE
-#------MAKE CODE LOGICAL AND MORE GENERIC?
-#------GET LIST OF ENTITIES?
-#````````````````````````````````````````````````````````````
-
-import logging
 import sys
 import http.server as httpsrv
 import json
@@ -15,7 +11,7 @@ from sanDecode import SAN_response
 from serverConfig import serverConfig as sc
 from cleanup import cleanup
 
-#GLOBAL VARIABLES DELCARATION
+# GLOBAL VARIABLES DELCARATION
 
 _OCB_IP_ = sc().get_ocb_ip()
 _OCB_PORT_ = sc().get_ocb_port()
@@ -37,11 +33,10 @@ class requestHandler(httpsrv.BaseHTTPRequestHandler):
         response = self.rfile.read(contentLen).decode('utf-8')
         self._set_response()
         data = json.loads(response)
-        SAN_response(data).sendModifiedJson(_OCB_IP_, _OCB_PORT_)
-        #SAN_response(data).test()
+        SAN_response(data).send_modified_json(_OCB_IP_, _OCB_PORT_)
 
 def main():
-    server_address = (_PROXY_IP_, _PROXY_PORT_)     # MAKE SURE IT IS NOT LOCALHOST
+    server_address = (_PROXY_IP_, _PROXY_PORT_)     # make sure it is not "localhost"
     server = httpsrv.HTTPServer(server_address,requestHandler)
     print("Serving on %s:%d" %(_PROXY_IP_,_PROXY_PORT_))
     server.serve_forever()

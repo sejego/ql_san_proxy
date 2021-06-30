@@ -2,7 +2,7 @@ import requests
 
 entitiesList = []
 
-def addEntity(entity):
+def add_entity(entity):
     if entity not in entitiesList:
         entitiesList.append(entity)
 def cleanup(ocb_ip, ocb_port):

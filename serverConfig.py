@@ -22,8 +22,8 @@ class serverConfig():
     def get_proxy_port(self):
         return self.dicts['proxy_port']
     
-    def test(self):
+    def print_config(self):
         print(self.dicts)
 
 if __name__ == "__main__":
-    serverConfig().test()
+    serverConfig().print_config()
